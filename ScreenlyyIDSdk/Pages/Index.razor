@@ -1,0 +1,63 @@
+﻿@page "/"
+
+<div style="display: flex; flex-direction: column;">
+	@foreach (var item in results)
+	{
+		<div>@item</div>
+	}
+</div>
+
+<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+
+
+	@*FRONT SIDE*@
+	@if (captureStep == CaptureStep.Front || captureStep == CaptureStep.Back)
+	{
+		<div style="display: flex; width: 500px; flex-direction: column;">
+			<div>@(captureStep == CaptureStep.Front ? "Front Side" : "Back Side")</div>
+			<canvas id="result-id-img" style="display:block;width: 500px;height: 350px"></canvas>
+			<button @onclick="@(async Task ()=> {
+				if(captureStep== CaptureStep.Front)
+					await CaptureFrontSideId();
+				else if(captureStep== CaptureStep.Back)
+					await CaptureBackSideId();
+				})">
+				Capture Photo
+			</button>
+			<button @onclick="@UseImage">Use this Image</button>
+		</div>
+	}
+
+	@*SELFIE*@
+	else if (captureStep == CaptureStep.Selfie)
+	{
+		<div style="display: flex; width: 500px; flex-direction: column;">
+			<div>Selfie Image</div>
+			<canvas id="result-id-img" style="display:block;width: 100%;height: 100%"></canvas>
+			<button @onclick="@TakeSelfie">Take Selfie Image</button>
+		</div>
+	}
+
+	@*User INFO INPUT*@
+	else if (captureStep == CaptureStep.DataInput)
+	{
+		<div style="display: flex; flex-direction: column;">
+			<div style="display: flex; flex-direction: column; margin: 8px 0;">
+				<label>First Name</label>
+				<input type="text" @bind-value=@firstName />
+			</div>
+			<div style="display: flex; flex-direction: column; margin: 8px 0;">
+				<label>Last Name</label>
+				<input type="text" @bind-value=@lastName />
+			</div>
+			<div style="display: flex; flex-direction: column; margin: 8px 0;">
+				<label>Date of Birth</label>
+				<input type="text" @bind-value=@dob />
+			</div>
+			<div style="margin: 8px 0;">
+				<button type="submit">Submit</button>
+			</div>
+		</div>
+	}
+
+</div>
